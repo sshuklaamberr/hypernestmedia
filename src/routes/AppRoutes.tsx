@@ -7,6 +7,7 @@ import Home from "../pages/Home";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
 import Login from "../pages/Login";
+import Signup from "../pages/Signup";
 import Dashboard from "../pages/Dashboard";
 import ProtectedRoute from "../components/ProtectedRoute";
 
@@ -21,7 +22,7 @@ function DefaultLayout() {
   );
 }
 
-/* Layout WITHOUT navbar */
+/* Layout WITHOUT navbar (auth / landing) */
 function CleanLayout() {
   return <Outlet />;
 }
@@ -33,6 +34,7 @@ export default function AppRoutes() {
       <Route element={<CleanLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} /> {/* ✅ FIX */}
       </Route>
 
       {/* Public pages WITH navbar */}
