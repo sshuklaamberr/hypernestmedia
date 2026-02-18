@@ -1,73 +1,103 @@
-# React + TypeScript + Vite
+🚀 HyperNestMedia
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+HyperNestMedia is a modern digital technology agency focused on building high-performance, scalable, and secure web experiences for startups, creators, and growing businesses.
 
-Currently, two official plugins are available:
+This repository contains the official web platform of HyperNestMedia, engineered using industry-grade tools and best practices to reflect real-world production standards.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+⸻
 
-## React Compiler
+🌐 What We Are Building
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+We are developing a full-stack, production-ready web platform that serves both as:
+	•	A professional agency website
+	•	A secure client & internal dashboard system
 
-## Expanding the ESLint configuration
+This project is designed to scale like a real SaaS product, not a demo application.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+⸻
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+✨ Key Features
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+🔐 Authentication (Firebase)
+	•	Email & Password Login
+	•	Google OAuth Authentication
+	•	Forgot Password (Secure Password Reset Email)
+	•	Protected Routes (Auth-Guarded Pages)
+	•	Secure session handling
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+📩 Email & Security
+	•	Password reset emails using Firebase Action URLs
+	•	Industry-standard email templates
+	•	Secure authentication email flows
+	•	Ready for custom SMTP integration
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+🖥️ Frontend Experience
+	•	Clean, modern dark UI
+	•	Fully responsive design
+	•	Smooth animations using Framer Motion
+	•	Consistent styling across Home, Login, Signup, and Dashboard
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+🧠 Architecture
+	•	Component-based React architecture
+	•	Route-based layouts (with & without Navbar)
+	•	Protected dashboard routes
+	•	Optimized for Vercel deployment
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+⸻
+
+🛠️ Tech Stack
+	•	Frontend: React + TypeScript + Vite
+	•	Styling: Tailwind CSS
+	•	Animations: Framer Motion
+	•	Authentication: Firebase Authentication
+	•	Routing: React Router
+	•	Deployment: Vercel
+	•	Version Control: Git & GitHub
+
+  🔒 Security-First Approach
+	•	All sensitive routes are protected
+	•	Firebase manages authentication securely
+	•	Password reset flows use signed action URLs
+	•	No secrets or credentials exposed in frontend code
+
+⸻
+
+🚀 Deployment
+
+The application is optimized for Vercel:
+	•	Fast builds with Vite
+	•	Secure environment variables
+	•	Production-ready configuration
+
+⸻
+
+🎯 Vision
+
+HyperNestMedia is built with a long-term vision to evolve into a complete digital services platform, including:
+	•	Client onboarding
+	•	Project & task dashboards
+	•	Admin panel
+	•	Analytics & reporting
+	•	Automated email notifications
+	•	SaaS-grade security & scalability
+
+⸻
+
+👥 Founders
+	•	Amber Shukla — Founder & Lead Developer
+	•	Nishant — Co-Founder
+
+⸻
+
+📌 Project Status
+
+🚧 Actively under development
+Features and improvements are added continuously following industry best practices.
+
+⸻
+
+📬 Contact
+
+For inquiries or collaboration:
+support@hypernestmedia.com
+
