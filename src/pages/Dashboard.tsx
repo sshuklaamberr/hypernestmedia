@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { auth } from "../lib/firebase";
 import { signOut } from "firebase/auth";
+import ProjectRequestModal from "../components/ProjectRequestModal";
+
 import {
   LayoutDashboard,
   Folder,
@@ -28,6 +30,7 @@ export default function Dashboard() {
   const user = auth.currentUser;
 
   const [active, setActive] = useState("services");
+  const [selectedService, setSelectedService] = useState<string | null>(null);
 
   const name =
     user?.displayName ||
@@ -80,8 +83,7 @@ export default function Dashboard() {
     <div className="flex min-h-screen bg-black text-white">
 
       {/* SIDEBAR */}
-      <aside className="w-64 bg-white/5 backdrop-blur-xl border-r border-white/10 p-6 flex flex-col justify-between">
-
+      <aside className="w-64 bg-black/60 backdrop-blur-2xl border-r border-white/10 shadow-2xl shadow-black/40 p-6 flex flex-col justify-between">
         <div>
           <Link to="/" className="text-xl font-semibold tracking-tight">
             HyperNestMedia
@@ -117,47 +119,44 @@ export default function Dashboard() {
       {/* MAIN CONTENT */}
       <main className="flex-1 relative overflow-hidden p-12">
 
-        {/* Glow */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/2 left-1/2 w-[900px] h-[900px]
-                          -translate-x-1/2 -translate-y-1/2
-                          rounded-full bg-white/5 blur-[180px]" />
-        </div>
-
+        {/* CONTENT */}
         <motion.div
           key={active}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          {/* SERVICES SECTION */}
           {active === "services" && (
             <>
-              <h1 className="text-4xl font-semibold mb-6">
+              <h1 className="text-5xl font-semibold tracking-tight mb-6">
                 Welcome,{" "}
                 <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
                   {name}
                 </span>
               </h1>
 
-              <p className="text-gray-400 mb-16">
+              <p className="text-gray-400 mb-20">
                 Explore our services and start your next digital project.
               </p>
 
               {categories.map((category, catIndex) => (
-                <div key={catIndex} className="mb-20">
-                  <h2 className="text-2xl font-semibold mb-8">
+                <div key={catIndex} className="mb-28">
+                  <h2 className="text-2xl font-semibold mb-10">
                     {category.title}
                   </h2>
 
-                  <div className="grid md:grid-cols-3 gap-8">
+                  <div className="grid md:grid-cols-3 gap-10">
                     {category.services.map((service, index) => (
                       <motion.div
                         key={index}
-                        whileHover={{ y: -6 }}
-                        className="group rounded-3xl p-8 bg-white/5 backdrop-blur-lg
-                                   border border-white/10 hover:border-white/30
-                                   transition-all duration-300"
+                        whileHover={{ y: -8 }}
+                        className="group relative rounded-3xl p-8
+                                   bg-white/[0.04]
+                                   backdrop-blur-xl
+                                   border border-white/10
+                                   hover:border-emerald-400/40
+                                   hover:bg-white/[0.06]
+                                   transition-all duration-500"
                       >
                         <div className="mb-6 w-12 h-12 flex items-center justify-center
                                         rounded-2xl bg-white/10 group-hover:bg-white/20 transition">
@@ -177,7 +176,7 @@ export default function Dashboard() {
                         </p>
 
                         <button
-                          onClick={() => navigate("/contact")}
+                          onClick={() => setSelectedService(service.name)}
                           className="mt-6 flex items-center gap-2 text-sm font-medium
                                      text-white group-hover:text-emerald-400 transition"
                         >
@@ -195,13 +194,21 @@ export default function Dashboard() {
             </>
           )}
 
-          {/* OTHER SECTIONS PLACEHOLDER */}
           {active !== "services" && (
             <h2 className="text-2xl text-gray-400">
               {active.charAt(0).toUpperCase() + active.slice(1)} section coming soon.
             </h2>
           )}
         </motion.div>
+
+        {/* PROJECT REQUEST MODAL */}
+        {selectedService && user && (
+          <ProjectRequestModal
+            service={selectedService}
+            userId={user.uid}
+            onClose={() => setSelectedService(null)}
+          />
+        )}
 
       </main>
     </div>

@@ -34,23 +34,43 @@ export default function Login() {
       } else if (err.code === "auth/invalid-email") {
         setError("Invalid email address");
       } else {
-        setError("Login failed. Please try again.");
+        setError(err.message || "Login failed. Please try again.");
       }
     } finally {
       setLoading(false);
     }
   };
 
-  // GOOGLE LOGIN
+  // GOOGLE LOGIN (UPGRADED SAFELY)
   const handleGoogleLogin = async () => {
     setError("");
     setLoading(true);
 
     try {
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+
+      console.log("Google Login Success:", result.user);
+
       navigate("/dashboard");
-    } catch {
-      setError("Google login failed");
+
+    } catch (err: any) {
+      console.error("Google Login Error:", err);
+
+      if (err.code === "auth/operation-not-allowed") {
+        setError("Google sign-in is not enabled in Firebase.");
+      } 
+      else if (err.code === "auth/unauthorized-domain") {
+        setError("This domain is not authorized in Firebase.");
+      } 
+      else if (err.code === "auth/popup-closed-by-user") {
+        setError("Google popup was closed before completing sign-in.");
+      } 
+      else if (err.code === "auth/network-request-failed") {
+        setError("Network error. Check Firebase configuration.");
+      } 
+      else {
+        setError(err.message || "Google login failed.");
+      }
     } finally {
       setLoading(false);
     }
@@ -69,8 +89,8 @@ export default function Login() {
     try {
       await sendPasswordResetEmail(auth, email);
       setInfo("Password reset email sent successfully");
-    } catch {
-      setError("Unable to send reset email");
+    } catch (err: any) {
+      setError(err.message || "Unable to send reset email");
     }
   };
 
@@ -135,7 +155,6 @@ export default function Login() {
             {error && <p className="text-xs text-red-500">{error}</p>}
             {info && <p className="text-xs text-gray-300">{info}</p>}
 
-            {/* Primary CTA – same language as Home */}
             <button
               type="submit"
               disabled={loading}
@@ -163,7 +182,6 @@ export default function Login() {
             <div className="flex-1 h-px bg-white/10" />
           </div>
 
-          {/* Google Login */}
           <button
             onClick={handleGoogleLogin}
             className="w-full py-3 rounded-full

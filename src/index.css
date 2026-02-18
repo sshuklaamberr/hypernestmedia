@@ -2,14 +2,93 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
+/* ============================= */
+/* ===== GLOBAL BASE STYLES ==== */
+/* ============================= */
+
+html,
+body {
   background: #000;
   color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
     "SF Pro Text", Inter, system-ui, sans-serif;
+  scroll-behavior: smooth;
+
+  /* Better font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Subtle radial depth base */
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 255, 255, 0.03),
+    transparent 60%
+  );
 }
 
+/* Selection */
 ::selection {
   background: #22c55e;
   color: black;
+}
+
+/* ============================= */
+/* ===== AURORA ANIMATION ====== */
+/* ============================= */
+
+@keyframes auroraMove {
+  0% {
+    transform: translate(-10%, -10%) rotate(0deg);
+  }
+  50% {
+    transform: translate(10%, 10%) rotate(180deg);
+  }
+  100% {
+    transform: translate(-10%, -10%) rotate(360deg);
+  }
+}
+
+.aurora-layer {
+  animation: auroraMove 40s linear infinite;
+  will-change: transform;
+}
+
+/* ============================= */
+/* ===== FADE UTILITIES ========= */
+/* ============================= */
+
+@keyframes fadeInSoft {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-soft {
+  animation: fadeInSoft 0.6s ease forwards;
+}
+
+/* ============================= */
+/* ===== PREMIUM SCROLLBAR ===== */
+/* ============================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
