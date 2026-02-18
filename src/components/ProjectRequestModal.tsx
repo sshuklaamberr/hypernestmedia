@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { db } from "../lib/firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { getApp } from "firebase/app";
 
 interface Props {
   service: string;
@@ -14,6 +14,9 @@ export default function ProjectRequestModal({
   userId,
   onClose,
 }: Props) {
+  // ✅ Initialize Firestore using existing app (no firebase.ts changes needed)
+  const db = getFirestore(getApp());
+
   const [projectName, setProjectName] = useState("");
   const [budget, setBudget] = useState("");
   const [timeline, setTimeline] = useState("");
