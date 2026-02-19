@@ -22,7 +22,7 @@ function DefaultLayout() {
   );
 }
 
-/* Layout WITHOUT navbar (auth / landing) */
+/* Layout WITHOUT navbar */
 function CleanLayout() {
   return <Outlet />;
 }
@@ -30,30 +30,30 @@ function CleanLayout() {
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* Public pages WITHOUT navbar */}
+
+      {/* ===== PUBLIC (NO NAVBAR) ===== */}
       <Route element={<CleanLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} /> {/* ✅ FIX */}
+        <Route path="/signup" element={<Signup />} />
       </Route>
 
-      {/* Public pages WITH navbar */}
+      {/* ===== PUBLIC (WITH NAVBAR) ===== */}
       <Route element={<DefaultLayout />}>
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
       </Route>
 
-      {/* Protected pages */}
-      <Route element={<CleanLayout />}>
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-      </Route>
+      {/* ===== PROTECTED (NO NAVBAR) ===== */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+
     </Routes>
   );
 }

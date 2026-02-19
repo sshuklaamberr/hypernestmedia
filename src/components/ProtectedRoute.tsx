@@ -9,11 +9,22 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
 
-  if (loading) return null;
+  // 🔄 Loading state (important UX)
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-black text-white">
+        <p className="text-sm text-gray-400 animate-pulse">
+          Checking authentication...
+        </p>
+      </div>
+    );
+  }
 
+  // ❌ Not logged in → redirect
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
+  // ✅ Logged in → allow access
   return <>{children}</>;
 }
