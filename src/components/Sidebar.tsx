@@ -3,9 +3,7 @@ import {
   Folder, 
   Clock, 
   User, 
-  Settings as LuSettings, // ✅ Rename here to avoid conflict
-  PlusCircle, 
-  MessageCircle 
+  Settings as LuSettings,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -15,13 +13,12 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ active, setActive }: SidebarProps) {
-  // ✅ Match these IDs to your Dashboard state IDs
   const menuItems = [
     { id: "services", name: "Services", icon: <LayoutDashboard size={18} /> },
     { id: "projects", name: "My Projects", icon: <Folder size={18} /> },
     { id: "history", name: "Order History", icon: <Clock size={18} /> },
     { id: "profile", name: "Profile", icon: <User size={18} /> },
-    { id: "settings", name: "Settings", icon: <LuSettings size={18} /> }, // ✅ Corrected icon name
+    { id: "settings", name: "Settings", icon: <LuSettings size={18} /> },
   ];
 
   return (
