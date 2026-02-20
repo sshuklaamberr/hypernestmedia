@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 
 // ── Animated Toggle ──
-function Toggle({ enabled, onToggle }) {
+function Toggle({ enabled, onToggle }: { enabled: boolean; onToggle: () => void }) {
   return (
     <button
       onClick={onToggle}
@@ -36,8 +36,8 @@ function Toggle({ enabled, onToggle }) {
 }
 
 // ── Section Header ──
-function SectionHeader({ icon, label, color = "emerald" }) {
-  const colorMap = {
+function SectionHeader({ icon, label, color = "emerald" }: { icon: React.ReactNode; label: string; color?: string }) {
+  const colorMap: { [key: string]: string } = {
     emerald: "bg-emerald-500/10 text-emerald-400",
     blue: "bg-blue-500/10 text-blue-400",
     red: "bg-red-500/10 text-red-400",
@@ -51,7 +51,7 @@ function SectionHeader({ icon, label, color = "emerald" }) {
 }
 
 // ── Delete Confirm Modal ──
-function DeleteModal({ onCancel, onConfirm }) {
+function DeleteModal({ onCancel, onConfirm }: { onCancel: () => void; onConfirm: () => void }) {
   const [input, setInput] = useState("");
   const canDelete = input === "DELETE";
 
@@ -67,7 +67,7 @@ function DeleteModal({ onCancel, onConfirm }) {
         initial={{ scale: 0.92, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.92, opacity: 0, y: 20 }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
         className="relative w-full max-w-md rounded-3xl
                    bg-[#090d0b] border border-red-500/20
                    shadow-[0_30px_80px_rgba(0,0,0,0.7)]
@@ -133,7 +133,9 @@ export default function Settings() {
   const navigate = useNavigate();
   const [resetSent, setResetSent] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [toggles, setToggles] = useState({ notifications: true, billing: true });
+
+  // FIX 1: explicit index signature so string keys work
+  const [toggles, setToggles] = useState<{ [key: string]: boolean }>({ notifications: true, billing: true });
 
   const handlePasswordReset = async () => {
     if (auth.currentUser?.email) {
@@ -153,16 +155,17 @@ export default function Settings() {
     setShowDeleteModal(false);
   };
 
-  const flipToggle = (key) =>
+  const flipToggle = (key: string) =>
     setToggles((prev) => ({ ...prev, [key]: !prev[key] }));
 
+  // FIX 2: ease cast to proper tuple type
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
   };
   const itemVariants = {
     hidden: { opacity: 0, y: 16 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
   };
 
   return (
