@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useAuth } from "../lib/useAuth";
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 
 // Floating orb that follows cursor subtly
 function CursorOrb() {
@@ -11,7 +11,7 @@ function CursorOrb() {
   const springY = useSpring(y, { stiffness: 60, damping: 20 });
 
   useEffect(() => {
-    const move = (e) => { x.set(e.clientX); y.set(e.clientY); };
+    const move = (e: MouseEvent) => { x.set(e.clientX); y.set(e.clientY); };
     window.addEventListener("mousemove", move);
     return () => window.removeEventListener("mousemove", move);
   }, []);
@@ -66,10 +66,10 @@ function Marquee() {
   );
 }
 
-
 export default function Home() {
   const { user, loading } = useAuth();
 
+  // FIX: cast ease arrays to proper tuple types
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -84,7 +84,7 @@ export default function Home() {
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
-      transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
+      transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
     },
   };
 
@@ -146,23 +146,16 @@ export default function Home() {
 
       {/* ===== BACKGROUND ===== */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
-        {/* Deep aurora blobs */}
         <div className="orb-pulse absolute top-[-300px] left-[-200px] w-[750px] h-[750px]
                         bg-gradient-to-br from-emerald-500/15 via-teal-600/8 to-transparent
                         rounded-full blur-[200px]" />
         <div className="orb-pulse-2 absolute bottom-[-350px] right-[-250px] w-[850px] h-[850px]
                         bg-gradient-to-tl from-teal-500/12 via-emerald-600/6 to-transparent
                         rounded-full blur-[220px]" />
-
-        {/* Center radial */}
         <div className="absolute top-1/2 left-1/2 w-[900px] h-[600px]
                         -translate-x-1/2 -translate-y-1/2
                         bg-emerald-950/20 blur-[180px] rounded-full" />
-
-        {/* Grid lines */}
         <GridLines />
-
-        {/* Grain overlay */}
         <div className="absolute inset-0 opacity-[0.04] mix-blend-overlay"
              style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }} />
       </div>
@@ -177,7 +170,6 @@ export default function Home() {
                    border-b border-white/[0.06]
                    shadow-[0_4px_40px_rgba(0,0,0,0.6),0_1px_0_rgba(52,211,153,0.05)]"
       >
-        {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
           <div className="w-7 h-7 rounded-md bg-gradient-to-br from-emerald-400 to-teal-600
                           flex items-center justify-center shadow-[0_0_20px_rgba(52,211,153,0.3)]
@@ -189,7 +181,6 @@ export default function Home() {
           <span className="text-white text-[15px] font-medium tracking-tight">HyperNestMedia</span>
         </Link>
 
-        {/* Right CTA */}
         <div className="flex items-center">
           {user ? (
             <Link to="/dashboard"
@@ -249,11 +240,7 @@ export default function Home() {
               </Link>
             )}
           </motion.div>
-
-
         </motion.div>
-
-
       </div>
 
       {/* Scrolling ticker */}
