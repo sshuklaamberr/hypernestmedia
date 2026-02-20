@@ -434,7 +434,7 @@ export default function Dashboard() {
         {detailsPackage && (
           <PackageDetailsModal
             pkg={detailsPackage}
-            serviceName={detailsPackage.serviceName}
+            serviceName={detailsPackage.serviceName ?? ""}
             onClose={() => setDetailsPackage(null)}
             onContinue={() => {
               setSelectedPackage(detailsPackage);
