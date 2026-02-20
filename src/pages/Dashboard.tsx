@@ -35,14 +35,36 @@ import {
   Sparkles,
 } from "lucide-react";
 
+// FIX: proper types for service/package data
+interface Package {
+  name: string;
+  price: number;
+  popular?: boolean;
+  features: string[];
+  originalPrice?: number;
+  serviceName?: string;
+}
+
+interface Service {
+  icon: React.ReactNode;
+  name: string;
+  desc: string;
+  delivery: string;
+  highlight: string;
+  packages: Package[];
+}
+
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
 
   const [active, setActive] = useState("services");
-  const [selectedService, setSelectedService] = useState(null);
-  const [detailsPackage, setDetailsPackage] = useState(null);
-  const [selectedPackage, setSelectedPackage] = useState(null);
+  // FIX: typed useState instead of null
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [detailsPackage, setDetailsPackage] = useState<Package | null>(null);
+  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
 
   if (loading) return null;
 
@@ -50,7 +72,8 @@ export default function Dashboard() {
   const initial = name.trim().charAt(0).toUpperCase();
 
   const DISCOUNT_RATE = 0.75;
-  const calculatePrice = (price) => Math.round(price * (1 - DISCOUNT_RATE));
+  // FIX: typed parameter
+  const calculatePrice = (price: number) => Math.round(price * (1 - DISCOUNT_RATE));
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -110,7 +133,6 @@ export default function Dashboard() {
           background: rgba(255,255,255,0.03);
           border-color: rgba(255,255,255,0.05);
         }
-
         .service-card {
           transition: transform 0.35s cubic-bezier(0.22,1,0.36,1),
                       border-color 0.25s ease,
@@ -125,7 +147,6 @@ export default function Dashboard() {
           background: rgba(52,211,153,0.15);
           color: #34d399;
         }
-
         @keyframes shimmer {
           0% { background-position: -200% center; }
           100% { background-position: 200% center; }
@@ -144,11 +165,9 @@ export default function Dashboard() {
       <aside className="w-64 fixed h-full z-20 flex flex-col
                         bg-[#060a08]/80 backdrop-blur-2xl
                         border-r border-white/[0.06]">
-        {/* Top accent */}
         <div className="h-[1px] bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent" />
 
         <div className="flex flex-col h-full p-5">
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 group mb-10 mt-1">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-600
                             flex items-center justify-center
@@ -158,14 +177,11 @@ export default function Dashboard() {
                 <path d="M2 7 L7 2 L12 7 L7 12 Z" fill="white" fillOpacity="0.95"/>
               </svg>
             </div>
-            {/* ↑ logo text: was text-[14px], now text-base (16px) */}
             <span className="text-base font-semibold tracking-tight text-white">HyperNestMedia</span>
           </Link>
 
-          {/* Nav label — was text-[10px], now text-xs (12px) */}
           <p className="text-xs uppercase tracking-widest text-gray-700 font-semibold mb-3 ml-1">Navigation</p>
 
-          {/* Nav items — was text-sm (14px), now text-[15px] */}
           <nav className="space-y-1 flex-1">
             {sidebarItems.map((item) => (
               <button
@@ -188,7 +204,6 @@ export default function Dashboard() {
             ))}
           </nav>
 
-          {/* User chip + logout */}
           <div className="mt-auto pt-5 border-t border-white/[0.05] space-y-3">
             <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-600
@@ -196,13 +211,10 @@ export default function Dashboard() {
                 {initial}
               </div>
               <div className="min-w-0">
-                {/* user name: was text-xs (12px), now text-sm (14px) */}
                 <p className="text-sm font-medium text-white truncate">{name}</p>
-                {/* user email: was text-[10px], now text-xs (12px) */}
                 <p className="text-xs text-gray-600 truncate">{user?.email}</p>
               </div>
             </div>
-            {/* logout: was text-sm, stays text-sm but icon bigger */}
             <button
               onClick={handleLogout}
               className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl
@@ -229,7 +241,7 @@ export default function Dashboard() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.4, ease: EASE }}
               className="p-10"
             >
               {/* Launch Banner */}
@@ -244,27 +256,22 @@ export default function Dashboard() {
 
                 <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
                   <div>
-                    {/* Grand Launch badge: was text-[10px], now text-xs (12px) */}
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full
                                      bg-emerald-400 text-black text-xs font-black uppercase tracking-widest">
                       <Sparkles size={11} /> Grand Launch
                     </span>
-                    {/* "75% OFF Everything": was text-3xl, now text-4xl */}
                     <h2 className="text-4xl font-bold mt-3 tracking-tight">
                       75% OFF{" "}
                       <span className="shimmer-text">Everything</span>
                     </h2>
-                    {/* sub-text: was text-sm, now text-base (16px) */}
                     <p className="text-gray-500 mt-2 text-base">
                       Be one of the first 1,000 clients to claim this massive discount.
                     </p>
                   </div>
 
-                  {/* Slot counter */}
                   <div className="bg-white/[0.03] backdrop-blur p-5 rounded-2xl
                                   border border-white/[0.07] min-w-[240px] shrink-0">
                     <div className="flex justify-between mb-2.5">
-                      {/* was text-[10px], now text-xs */}
                       <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Early Bird Slots</span>
                       <span className="text-xs font-bold text-emerald-400">642 / 1000 Left</span>
                     </div>
@@ -272,27 +279,24 @@ export default function Dashboard() {
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: "35.8%" }}
-                        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
+                        transition={{ duration: 1.2, ease: EASE, delay: 0.4 }}
                         className="h-full bg-gradient-to-r from-emerald-500 to-teal-400
                                    shadow-[0_0_8px_rgba(52,211,153,0.6)] rounded-full"
                       />
                     </div>
-                    {/* was text-[10px], now text-xs */}
                     <p className="text-xs text-gray-700 mt-2">Filling fast — limited availability</p>
                   </div>
                 </div>
               </div>
 
-              {/* Welcome — was text-3xl, now text-4xl */}
+              {/* Welcome */}
               <div className="mb-10">
                 <h1 className="text-4xl font-semibold tracking-tight">
                   Welcome back,{" "}
-                  <span className="bg-gradient-to-r from-emerald-300 to-teal-300
-                                   bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-emerald-300 to-teal-300 bg-clip-text text-transparent">
                     {name}
                   </span>
                 </h1>
-                {/* was text-sm, now text-base */}
                 <p className="text-gray-600 mt-2 text-base">Choose a service below to start your project with HyperNest.</p>
               </div>
 
@@ -301,9 +305,7 @@ export default function Dashboard() {
                 <div key={i} className="mb-14">
                   <div className="flex items-center gap-3 mb-6">
                     <span className="h-5 w-[3px] bg-emerald-400 rounded-full" />
-                    {/* category title: was text-base, now text-lg */}
                     <h2 className="text-lg font-semibold text-white tracking-tight">{category.title}</h2>
-                    {/* was text-xs, now text-sm */}
                     <span className="text-sm text-gray-700">({category.services.length})</span>
                   </div>
 
@@ -313,48 +315,36 @@ export default function Dashboard() {
                         key={index}
                         onClick={() => setSelectedService(service)}
                         className="service-card cursor-pointer relative p-6 rounded-2xl
-                                   bg-white/[0.02] border border-white/[0.06]
-                                   overflow-hidden"
+                                   bg-white/[0.02] border border-white/[0.06] overflow-hidden"
                       >
-                        {/* top line */}
                         <div className="absolute top-0 left-0 right-0 h-[1px]
                                         bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-                        {/* icon box: was w-10 h-10, now w-12 h-12 */}
                         <div className="card-icon w-12 h-12 rounded-xl bg-white/[0.04]
                                         flex items-center justify-center text-gray-500
                                         border border-white/[0.06] mb-5 transition-all duration-300">
                           {service.icon}
                         </div>
 
-                        {/* service name: was text-sm, now text-base */}
                         <h3 className="text-base font-semibold text-white">{service.name}</h3>
-                        {/* desc: was text-xs, now text-sm */}
-                        <p className="text-sm text-gray-600 mt-1.5 leading-relaxed line-clamp-2">
-                          {service.desc}
-                        </p>
+                        <p className="text-sm text-gray-600 mt-1.5 leading-relaxed line-clamp-2">{service.desc}</p>
 
                         <div className="flex items-center justify-between mt-5 pt-4 border-t border-white/[0.04]">
                           <div>
-                            {/* "Starting at" label: was text-[10px], now text-xs */}
                             <p className="text-xs text-gray-700 uppercase tracking-widest mb-1">Starting at</p>
                             <div className="flex items-baseline gap-1.5">
-                              {/* discounted price: was text-base, now text-lg */}
                               <span className="text-lg font-bold text-white">
                                 ₹{calculatePrice(service.packages[0].price).toLocaleString()}
                               </span>
-                              {/* original price strike: was text-xs, now text-sm */}
                               <span className="text-sm text-gray-700 line-through">
                                 ₹{service.packages[0].price.toLocaleString()}
                               </span>
                             </div>
                           </div>
                           <div className="text-right">
-                            {/* "75% OFF" badge: was text-[10px], now text-xs */}
                             <span className="inline-block text-xs font-bold text-emerald-400
                                              bg-emerald-400/8 border border-emerald-500/15
                                              px-2.5 py-1 rounded-lg">75% OFF</span>
-                            {/* delivery text: was text-[10px], now text-xs */}
                             <p className="text-xs text-gray-700 mt-1">{service.delivery}</p>
                           </div>
                         </div>
@@ -369,7 +359,7 @@ export default function Dashboard() {
           {/* ── ORDER HISTORY ── */}
           {active === "history" && (
             <motion.div key="history" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} className="p-10">
+              exit={{ opacity: 0 }} transition={{ duration: 0.4, ease: EASE }} className="p-10">
               <OrderHistory />
             </motion.div>
           )}
@@ -377,7 +367,7 @@ export default function Dashboard() {
           {/* ── PROFILE ── */}
           {active === "profile" && (
             <motion.div key="profile" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} className="p-10">
+              exit={{ opacity: 0 }} transition={{ duration: 0.4, ease: EASE }} className="p-10">
               <Profile />
             </motion.div>
           )}
@@ -385,7 +375,7 @@ export default function Dashboard() {
           {/* ── SETTINGS ── */}
           {active === "settings" && (
             <motion.div key="settings" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} className="p-10">
+              exit={{ opacity: 0 }} transition={{ duration: 0.4, ease: EASE }} className="p-10">
               <Settings />
             </motion.div>
           )}
@@ -393,7 +383,7 @@ export default function Dashboard() {
           {/* ── PROJECTS EMPTY STATE ── */}
           {active === "projects" && (
             <motion.div key="projects" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              exit={{ opacity: 0 }} transition={{ duration: 0.4, ease: EASE }}
               className="p-10 flex flex-col items-center justify-center min-h-[70vh]">
               <div className="text-center max-w-sm">
                 <div className="relative mx-auto w-20 h-20 mb-6">
@@ -403,9 +393,7 @@ export default function Dashboard() {
                   </div>
                   <div className="absolute inset-0 rounded-2xl bg-emerald-500/5 blur-xl" />
                 </div>
-                {/* was text-lg, now text-xl */}
                 <h3 className="text-xl font-semibold text-white mb-2">No active projects yet</h3>
-                {/* was text-sm, now text-base */}
                 <p className="text-base text-gray-600 leading-relaxed mb-6">
                   Once your order is approved by our team, your project workspace will appear here.
                 </p>
@@ -429,14 +417,14 @@ export default function Dashboard() {
           <ServicePackageModal
             service={{
               ...selectedService,
-              packages: selectedService.packages.map((pkg) => ({
+              packages: selectedService.packages.map((pkg: Package) => ({
                 ...pkg,
                 originalPrice: pkg.price,
                 price: calculatePrice(pkg.price),
               })),
             }}
             onClose={() => setSelectedService(null)}
-            onSelectPackage={(pkg) => {
+            onSelectPackage={(pkg: Package) => {
               setDetailsPackage({ ...pkg, serviceName: selectedService.name });
               setSelectedService(null);
             }}
