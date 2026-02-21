@@ -18,7 +18,7 @@ interface Package {
   name: string;
   price: number;       // already 75% discounted (from Dashboard calculatePrice)
   features: string[];
-  originalPrice: number;
+  originalPrice?: number;
 }
 
 interface Props {
@@ -35,7 +35,7 @@ export default function PackageDetailsModal({ pkg, serviceName, onClose, onConti
 
   // ── Pricing breakdown ──
   const basePrice = pkg.price;                                             // 75% off price
-  const originalPrice = pkg.originalPrice; // full original price from ServicePackageModal
+  const originalPrice = pkg.originalPrice ?? Math.round(basePrice / 0.25);
   const totalPrice = basePrice + PLATFORM_FEE;                             // base + ₹49
   const savings = originalPrice - basePrice;
 
